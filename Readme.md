@@ -2,7 +2,7 @@
 
 A simple and customizable **quote video generator** that creates MP4 videos from configurable quote data.
 
-[Watch an example video](example.mp4)
+![Demo](example.gif)
 
 ---
 
@@ -136,4 +136,5 @@ See LICENSE file for info
 ## 👨‍💻 Author
 
 Sajawal Hassan
+
 Project: Quote Video Generator
