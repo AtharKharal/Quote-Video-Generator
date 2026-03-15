@@ -6,14 +6,16 @@ from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 import textwrap
 
 class VideoGenerator:
-    def __init__(self, quote, authorName, outputName):
+    def __init__(self, quote, author_name, output_name, font, audio_path):
         self.quote = quote
-        self.outputName = outputName
-        self.authorName = authorName
+        self.output_name = output_name
+        self.author_name = author_name
         self.height = 1920
         self.width = 1080
         self.duration = 7 # Seconds
         self.folder_path = "./images"
+        self.font = font
+        self.audio_path = audio_path
 
     def crop_image(self, img_path):
         clip = ImageClip(img_path)
@@ -22,15 +24,17 @@ class VideoGenerator:
         target_ratio = self.width / self.height
         orig_ratio = orig_w / orig_h
 
-        if orig_ratio > target_ratio:
+        img_is_wider = orig_ratio > target_ratio
+
+        if img_is_wider:
             new_w = int(round(orig_h * target_ratio))
-            x1 = int((orig_w - new_w) // 2)
+            x1 = int((orig_w - new_w) // 2) # Correct centre pos
             y1 = 0
             cropped = clip.cropped(x1=x1, y1=y1, width=new_w, height=orig_h)
         else:
             new_h = int(round(orig_w / target_ratio))
             x1 = 0
-            y1 = int((orig_h - new_h) // 2)
+            y1 = int((orig_h - new_h) // 2) # Correct centre pos
             cropped = clip.cropped(x1=x1, y1=y1, width=orig_w, height=new_h)
 
         final = cropped.resized(new_size=(self.width, self.height))
@@ -43,9 +47,11 @@ class VideoGenerator:
                 img_path = os.path.join(self.folder_path, f)
 
                 cropped_img = self.crop_image(img_path)
-                frame = cropped_img.get_frame(0)
+                frame = cropped_img.get_frame(0) # Getting frame first for opacity effect
 
-                frame = (frame * 0.3).astype("uint8") 
+                frame_with_opacity = frame * 0.3
+
+                frame = frame_with_opacity.astype("uint8") 
                 images.append(frame)
         
         return images
@@ -67,23 +73,23 @@ class VideoGenerator:
 
         txt = TextClip(
             text=wrapped_text,
-            font="fonts/font.ttf",
+            font=self.font,
             font_size=55,
             color="white",
             method="caption",
-            size=(980, None),
+            size=(980, None), # Padding on x-axis
             text_align="center",
-            margin=(100, 150)
+            margin=(100, 150) # To avoid vertical text cut-off
         ).with_position(("center", "center")).with_duration(self.duration)
 
         txt_author = TextClip(
-            text=self.authorName,
-            font="fonts/font.ttf",
+            text=self.author_name,
+            font=self.font,
             font_size=45,
             color='white',
             method='caption',
-            margin=(100, 150),
-            size=((1080 - 100), None),
+            margin=(100, 150), # To avoid vertical text cut-off
+            size=((1080 - 100), None), # Padding on x-axis
             text_align="center"
         ).with_position(("center", 0.52), relative=True).with_duration(self.duration)
 
@@ -92,8 +98,8 @@ class VideoGenerator:
     def generate(self):
         bg_clip = self.generate_bg()
         text_clip, author_text_clip = self.generate_text()
-        audio_clip = AudioFileClip("audio.mp3")
+        audio_clip = AudioFileClip(self.audio_path)
 
         final_clip = CompositeVideoClip.CompositeVideoClip([bg_clip, text_clip, author_text_clip])
         final_clip = final_clip.with_audio(audio_clip)
-        final_clip.write_videofile(self.outputName, codec="libx264")
+        final_clip.write_videofile(self.output_name, codec="libx264")

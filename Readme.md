@@ -9,7 +9,7 @@ A simple and customizable **quote video generator** that creates MP4 videos from
 
 ## 📌 Overview
 
-This project generates a video based on a quote, author, and output configuration defined in `input.py`.
+This project generates a video based on a quote, author, and output configuration defined in `generate_video.py` / `publish_video.py`.
 
 - Add or remove images from the `images/` folder
 - Modify the **quote**
@@ -35,7 +35,6 @@ The video is created by executing `main.py`.
 project/
 │
 ├── main.py          # Main script to generate the video
-├── input.py         # Configure quote, author, and output settings here
 ├── audio.mp3        # Background audio used for final clip
 ├── requirements.txt # Required Python packages
 ├── fonts/           # Fonts folder
@@ -86,7 +85,7 @@ pip install -r requirements.txt
 
 ### 1. Configure the Quote
 
-Open `input.py` and modify:
+Open `generate_video.py` / `publish_video.py` and modify:
 
 - `quote`
 - `author`
@@ -123,7 +122,6 @@ pip install -r requirements.txt
 ## 🎯 Output
 
 - The program generates an **MP4 video**
-- Output location can be configured inside `input.py`
 - Video content is based on the configured quote and author
 
 ---
