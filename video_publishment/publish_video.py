@@ -11,7 +11,7 @@ Even centuries after his death, Shakespeare’s works continue to be studied, pe
 
 #poetry #literature #shakespeare""",
 
-    "file_path": "../output.mp4"
+    "file_path": "./output.mp4"
 }
 
 vidPublisher = VideoPublisher(input_dict["caption"], input_dict["file_path"])

@@ -1,8 +1,8 @@
 from vid_generator import VideoGenerator
 
 input_dict = {
-  "quote": "All the world's a stage, and all the men and women merely players",
-  "author": "William Shakesphere",
+  "quote": "Darken your room, shut the door, empty your mind. You are still in great company.",
+  "author": "A.O. Spare",
   "outputName": "output.mp4",
   "font": "fonts/font.ttf",
   "audio": "audios/audio.mp3"

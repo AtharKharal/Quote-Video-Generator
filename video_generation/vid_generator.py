@@ -3,7 +3,9 @@ from moviepy import AudioFileClip
 from moviepy.video.VideoClip import ImageClip, TextClip
 from moviepy.video.compositing import CompositeVideoClip
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
+from PIL import Image
 import textwrap
+import numpy as np
 
 class VideoGenerator:
     def __init__(self, quote, author_name, output_name, font, audio_path):
@@ -13,32 +15,41 @@ class VideoGenerator:
         self.height = 1920
         self.width = 1080
         self.duration = 7 # Seconds
-        self.folder_path = "./images"
+        self.folder_path = "./images/images2"
         self.font = font
         self.audio_path = audio_path
 
     def crop_image(self, img_path):
-        clip = ImageClip(img_path)
-        orig_w, orig_h = clip.size
+        # 1. Load with PIL and force RGB mode
+        with Image.open(img_path) as img:
+            img = img.convert("RGB")
+            orig_w, orig_h = img.size
+            
+            target_ratio = self.width / self.height
+            orig_ratio = orig_w / orig_h
 
-        target_ratio = self.width / self.height
-        orig_ratio = orig_w / orig_h
-
-        img_is_wider = orig_ratio > target_ratio
-
-        if img_is_wider:
-            new_w = int(round(orig_h * target_ratio))
-            x1 = int((orig_w - new_w) // 2) # Correct centre pos
-            y1 = 0
-            cropped = clip.cropped(x1=x1, y1=y1, width=new_w, height=orig_h)
-        else:
-            new_h = int(round(orig_w / target_ratio))
-            x1 = 0
-            y1 = int((orig_h - new_h) // 2) # Correct centre pos
-            cropped = clip.cropped(x1=x1, y1=y1, width=orig_w, height=new_h)
-
-        final = cropped.resized(new_size=(self.width, self.height))
-        return final
+            if orig_ratio > target_ratio:
+                # Image is wider than 9:16
+                new_w = int(round(orig_h * target_ratio))
+                left = (orig_w - new_w) // 2
+                top = 0
+                right = left + new_w
+                bottom = orig_h
+            else:
+                # Image is taller than 9:16
+                new_h = int(round(orig_w / target_ratio))
+                left = 0
+                top = (orig_h - new_h) // 2
+                right = orig_w
+                bottom = top + new_h
+            
+            # 2. Crop and Resize
+            img = img.crop((left, top, right, bottom))
+            img = img.resize((self.width, self.height), Image.Resampling.LANCZOS)
+            
+            # 3. Convert back to a MoviePy ImageClip
+            # We convert the PIL image to a numpy array first
+            return ImageClip(np.array(img))
 
     def get_images(self):
         images = []
@@ -49,10 +60,9 @@ class VideoGenerator:
                 cropped_img = self.crop_image(img_path)
                 frame = cropped_img.get_frame(0) # Getting frame first for opacity effect
 
-                frame_with_opacity = frame * 0.3
-
-                frame = frame_with_opacity.astype("uint8") 
-                images.append(frame)
+                frame_with_opacity = (frame * 0.3).astype("uint8") 
+            
+                images.append(frame_with_opacity)
         
         return images
 
@@ -61,8 +71,13 @@ class VideoGenerator:
         
         repeated_images = (lambda lst, n: [item for _ in range(n) for item in lst])(_images, 10)
         durations = (lambda arr: [0.2] * len(arr))(repeated_images)
+        for img in repeated_images:
+            print(img.size)
 
+        print("------asdasdasd--------")
         clip = ImageSequenceClip(repeated_images, durations=durations)
+        print("------zxcvbnm--------")
+
         
         return clip.with_duration(self.duration)
 
