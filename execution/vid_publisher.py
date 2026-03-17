@@ -73,7 +73,7 @@ class VideoPublisher():
 
         response_content_decoded = json.loads(response.content.decode("utf-8")) # Decode byte to dict
 
-        return response_content_decoded["status_code"]
+        return response_content_decoded["status_code"], response_content_decoded
 
     def publish_video(self):
         print("Uploading video to Github...")
@@ -86,13 +86,14 @@ class VideoPublisher():
 
         # Poll every five seconds for status
         while True:
-            status = self.check_container_status(container_id)
+            status, r = self.check_container_status(container_id)
 
             if (status == "FINISHED"):
                 print("Container created!")
                 break
             elif (status == "ERROR"):
                 print("ERROR OCCURED")
+                print(r)
                 raise Exception("Error occured")
             else:
                 print("Container creating...")

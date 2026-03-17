@@ -132,5 +132,5 @@ class VideoGenerator:
         audio_clip = AudioFileClip(self.audio_path)
 
         final_clip = CompositeVideoClip.CompositeVideoClip([bg_clip, text_clip, author_text_clip])
-        final_clip = final_clip.with_audio(audio_clip)
+        final_clip = final_clip.with_audio(audio_clip).with_duration(audio_clip.duration if self.duration > audio_clip.duration else self.duration)
         final_clip.write_videofile(self.output_name, codec="libx264")

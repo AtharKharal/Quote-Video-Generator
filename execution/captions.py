@@ -5,9 +5,7 @@ follow @quill_of_humanity for more content!
 ———"""
 
 captions = {
-    "Oscar Wilde": """You don't love someone for their looks, or their clothes, or for their fancy car, but because they can sing a song only you can hear.
-
-Oscar Wilde was a famous Irish writer, poet, and playwright born in 1854. He was known for his sharp wit, humor, and criticism of Victorian society. Wilde studied at Trinity College Dublin and later at Oxford University. He became a leading figure of the Aesthetic Movement, which promoted “art for art’s sake.”
+    "Oscar Wilde": """Oscar Wilde was a famous Irish writer, poet, and playwright born in 1854. He was known for his sharp wit, humor, and criticism of Victorian society. Wilde studied at Trinity College Dublin and later at Oxford University. He became a leading figure of the Aesthetic Movement, which promoted “art for art’s sake.”
 
 His most famous works include The Picture of Dorian Gray and plays like The Importance of Being Earnest. Despite his literary success, his later life was marked by legal troubles, and he spent time in prison. Today, he is remembered as one of the greatest writers in English literature.""",
 
@@ -19,5 +17,17 @@ Some of his most well-known works include Hamlet, Macbeth, and Romeo and Juliet.
 
 His most famous works include Crime and Punishment, The Brothers Karamazov, The Idiot, and Notes from Underground. These novels examine the complexity of the human mind and the struggles between good and evil.
 
-Dostoevsky’s writing has had a strong influence on philosophy, psychology, and literature. His works continue to be widely read and studied around the world."""
+Dostoevsky’s writing has had a strong influence on philosophy, psychology, and literature. His works continue to be widely read and studied around the world.""",
+
+    "Carl Jung": """Carl Jung was a Swiss psychiatrist and psychoanalyst who founded analytical psychology, a school of thought that explored the deep, symbolic layers of the human mind. Breaking away from Sigmund Freud, Jung introduced ideas that reshaped modern psychology—most notably the concepts of the collective unconscious and archetypes, suggesting that all humans share inherited patterns of thought and imagery.
+
+He believed that personal growth comes through a process he called individuation—the integration of conscious and unconscious parts of the self into a unified whole. Jung also explored dreams, mythology, religion, and art, seeing them not as illusions but as windows into the psyche’s deeper truths.
+
+His work bridged science and spirituality, influencing not just psychology but literature, philosophy, and even modern self-understanding.""",
+
+    "Bertrand Russell": """Bertrand Russell was one of the most influential philosophers of the 20th century, known for his sharp intellect and commitment to logic, clarity, and truth. Born in 1872, he worked across philosophy, mathematics, and social criticism, helping to shape modern analytical philosophy. His collaboration with Alfred North Whitehead on Principia Mathematica aimed to ground all mathematics in formal logic, a project that transformed the field.
+
+Russell was not only a thinker of abstract ideas but also a bold public intellectual. He wrote on topics like happiness, freedom, education, and war, often challenging authority and tradition. His book The Conquest of Happiness reflects his practical philosophy—arguing that a meaningful life is built through rational thought, purpose, and emotional balance.
+
+He was awarded the Nobel Prize in Literature in 1950 for his writings that champion humanitarian ideals and freedom of thought. Russell’s legacy endures as a voice of reason in a world often ruled by confusion and dogma."""
 }
