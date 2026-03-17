@@ -1,0 +1,9 @@
+{
+  "quote": "My being was never so low as to seek praise from some mere humans.",
+  "author": "Fyodor Dostoevsky",
+  "output_name": "output.mp4",
+  "font": "fonts/font.ttf",
+  "audio": "audios/3.mp3",
+  "images_path": "./images/images1",
+  "random_images": false
+}
