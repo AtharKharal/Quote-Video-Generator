@@ -2,7 +2,9 @@
 
 A simple and customizable **quote video generator** that creates MP4 videos from configurable quote data.
 
-![Demo](example.gif)
+<p align="center">
+  <img src="example.gif" alt="Demo" width="300" />
+</p>
 (The background looks cursed because of being converted into a GIF, the produced video will not have this problem)
 
 ---
