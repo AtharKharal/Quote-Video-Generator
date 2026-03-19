@@ -23,7 +23,7 @@ class VideoGenerator:
 
     def crop_image(self, img_path):
         with Image.open(img_path) as img:
-            img = img.convert("RGB")
+            img = img.convert("RGB") # Force RGB mode to apply opacity effect later on
             orig_w, orig_h = img.size
             
             target_ratio = self.width / self.height
@@ -71,7 +71,6 @@ class VideoGenerator:
                 img_list.append(img_path)
             
             return img_list
-                    
 
     # Crops images given from get_image_list and applies opacity to them
     def format_images(self):
@@ -95,7 +94,6 @@ class VideoGenerator:
         durations = (lambda arr: [self.bg_img_duration] * len(arr))(repeated_images)
 
         clip = ImageSequenceClip(repeated_images, durations=durations)
-
         
         return clip.with_duration(self.duration)
 

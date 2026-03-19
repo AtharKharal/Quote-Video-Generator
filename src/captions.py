@@ -53,5 +53,20 @@ Their work often blends personal vulnerability with social critique, addressing 
 
 Some of their well-known books include Pole Dancing to Gospel Hymns, The Madness Vase, and Lord of the Butterflies.
 
-Andrea Gibson’s poetry does not merely speak—it confronts, heals, and awakens, giving voice to experiences often left unspoken."""
+Andrea Gibson’s poetry does not merely speak—it confronts, heals, and awakens, giving voice to experiences often left unspoken.""",
+
+    "Slavoj Zizek": """Slavoj Žižek is a contemporary philosopher, cultural critic, and public intellectual known for his provocative style and wide-ranging analysis of ideology, politics, and culture. Born in Ljubljana in 1949, he draws heavily from Karl Marx, Georg Wilhelm Friedrich Hegel, and Jacques Lacan to develop his ideas.
+
+Žižek is best known for exploring how ideology shapes our everyday lives—not just through political systems, but through films, jokes, and popular culture. His works, such as The Sublime Object of Ideology, argue that people often unknowingly participate in systems they claim to oppose.
+
+What sets him apart is his energetic, often chaotic speaking style and his use of unexpected examples—from The Matrix to toilet designs—to explain complex philosophical ideas. Despite criticism for his density and controversial views, Žižek remains one of the most influential and widely discussed philosophers of the modern era.""",
+
+    "Unknown": """Quotes from unknown authors are fragments of thought that have outlived their creators. They drift through time without a name attached, yet carry an unusual kind of power—because they stand on their own, judged only by their truth, not by the authority behind them.
+
+Such quotes often spread through social media, books, or word of mouth, gaining popularity because they resonate deeply with people’s emotions or experiences. Without a known author, they become almost universal—belonging to everyone and no one at once.
+
+However, their anonymity can also be a weakness. Without context or verification, many “unknown” quotes are misattributed, altered, or even falsely created. In a world that values authenticity, this raises questions about originality and truth.
+
+Yet despite this uncertainty, quotes from unknown authors endure. They are like echoes in a vast hall—no one knows who first spoke, but the sound continues to move hearts long after the voice is gone.
+"""
 }

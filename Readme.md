@@ -11,7 +11,7 @@ A simple and customizable **quote video generator** that creates MP4 videos from
 
 ## Overview
 
-This project generates a video as shown in the above GIF of 9:16 aspect ratio and automatically publishes it to Instagram using Github as a data storage. In `execution/input.py` you can edit all parameters of the video, they are:
+This project generates a video as shown in the above GIF of 9:16 aspect ratio and automatically publishes it to Instagram using Github as a data storage. In `src/input.py` you can edit all parameters of the video, they are:
 
 Video generation:
 
@@ -40,7 +40,7 @@ source venv/source/activate # Or venv\Scripts\activate for windows
 pip install -r requirements.txt
 ```
 
-Once the environment is setup, configure the parameters in `execution/input.py` and run the `execution/generate_video.py` file to generate the video.
+Once the environment is setup, configure the parameters in `src/input.py` and run the `src/generate_video.py` file to generate the video.
 
 ### Video Publishing
 
@@ -57,7 +57,7 @@ Github is used because the Facebook GraphAPI, as far as I can tell from whatever
 
 ## Contributing
 
-The actual code is to be found in the `execution/` folder. Its folder structure is as follows:
+The actual code is to be found in the `src/` folder. Its folder structure is as follows:
 
 - `vid_generator.py`: The `VideoGenerator` class
 - `vid_publisher.py`: The `VideoPublisher` class
