@@ -76,7 +76,9 @@ Here are some features you can contribute on implementing:
 - [ ] Use some AI to choose which audios, images, and fonts would be best for a quote
 - [ ] Add more images. They can be of any size since the `VideoGenerator` class does resize them, but it sometimes bugs out.
 - [ ] On that topic, actually fixing the `crop_image` function inside the `VideoGenerator` would be great lmao.
-- [ ] Add different formats. Currently its just image shuffling. Other quotes formats involving fading transitions, pictures for posts, or other variations.
+- [ ] Add different formats. Currently its just image shuffling. Other quotes formats involving fading transitions, pictures for posts, or other
+      variations.
+- [ x ] Add image generation support
 
 ## License
 
