@@ -23,7 +23,7 @@ class Publisher():
             print(f"Error opening or reading file: {e}")
             return None
 
-    def upload_to_github(self, file_path):
+    def upload_to_github(self, file_path, publish_type):
         encoded_video = self.convert_to_base64(file_path)
         
         data = {
@@ -37,8 +37,9 @@ class Publisher():
             "X-GitHub-Api-Version": "2022-11-28"
         }
 
-        file_id = uuid.uuid4()
-        url = f"{os.getenv("GITHUB_REPO_PATH")}/{file_id}.mp4"
+        file_id = str(uuid.uuid4())
+        file_name = file_id + ".mp4" if publish_type == "video" else file_id + ".png"
+        url = f"{os.getenv("GITHUB_REPO_PATH")}/{file_name}"
 
         response = requests.put(url, json=data, headers=headers)
 
@@ -86,7 +87,7 @@ class Publisher():
 
     def publish(self, publish_type):
         print("Uploading video to Github...")
-        download_url = self.upload_to_github(self.file_path)
+        download_url = self.upload_to_github(self.file_path, publish_type)
         print("Video uploaded!\n")
         
         print("Creating container...")
