@@ -128,7 +128,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if (not args.file_path): raise Exception("File path required.")
 
-    caption = generate_caption(quote, author)
+    caption = generate_caption(quote=quote, author=author)
     vidPublisher = Publisher(caption, args.file_path)
 
     if args.file_path.split(".")[1] == "png":

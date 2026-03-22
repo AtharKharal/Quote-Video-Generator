@@ -98,7 +98,6 @@ class VideoGenerator:
         return clip.with_duration(self.duration)
 
     def generate_text(self):
-        # Manually wrapping text cuz I don't trust moviepy
         wrapper = textwrap.TextWrapper(width=35)
         wrapped_text = "\n".join(wrapper.wrap(text=self.quote))
 
@@ -108,21 +107,30 @@ class VideoGenerator:
             font_size=55,
             color="white",
             method="caption",
-            size=(980, None), # Padding on x-axis
+            size=(980, None),
             text_align="center",
-            margin=(100, 150) # To avoid vertical text cut-off
+            margin=(100, 150)
         ).with_position(("center", "center")).with_duration(self.duration)
 
+        
+        video_half_height = self.height / 2
+        text_half_height = txt.h / 2
+        buffer = 200
+        print(text_half_height)
+
+        author_y_pos = video_half_height + text_half_height - buffer
+        print("author_y_pos", author_y_pos)
+
         txt_author = TextClip(
-            text=self.author_name,
+            text=f"- {self.author_name}",
             font=self.font,
             font_size=45,
             color='white',
             method='caption',
+            size=(980, None),
             margin=(100, 150), # To avoid vertical text cut-off
-            size=((1080 - 100), None), # Padding on x-axis
             text_align="center"
-        ).with_position(("center", 0.52), relative=True).with_duration(self.duration)
+        ).with_position(("center", author_y_pos)).with_duration(self.duration)
 
         return txt, txt_author
 
