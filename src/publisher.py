@@ -119,13 +119,19 @@ class Publisher():
 
 if __name__ == "__main__":
     from publisher import Publisher
-    from input import input_dict
+    from input_parameters import quote, author
     from util import generate_caption
+    import argparse
 
-    caption = generate_caption(input_dict["quote"], input_dict["author"])
-    vidPublisher = Publisher(caption, input_dict["file_path"])
+    parser = argparse.ArgumentParser(description="Publish your video / image.")
+    parser.add_argument("file_path", help="The path of the file to be published")
+    args = parser.parse_args()
+    if (not args.file_path): raise Exception("File path required.")
 
-    if input_dict["file_path"].split(".")[1] == "png":
+    caption = generate_caption(quote, author)
+    vidPublisher = Publisher(caption, args.file_path)
+
+    if args.file_path.split(".")[1] == "png":
         vidPublisher.publish(publish_type="image")
-    elif input_dict["file_path"].split(".")[1] == "mp4":
+    elif args.file_path.split(".")[1] == "mp4":
         vidPublisher.publish(publish_type="video")
