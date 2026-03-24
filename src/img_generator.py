@@ -6,13 +6,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class ImageGenerator():
-    def __init__(self, quote, author):
+    def __init__(self, quote, author, output_name):
         self.quote = quote
         self.author = author
+        self.output_name = output_name
         self.img_size = 1080 
         self.font_path = "fonts/font.ttf"
         self.watermark_text = "@quill_of_humanity"
 
+    # Grabs image of author from wikipedia
     def get_image(self, author_name):
         url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{author_name}"
         
@@ -100,7 +102,6 @@ class ImageGenerator():
         draw = ImageDraw.Draw(img)
 
         try:
-            # font = ImageFont.truetype(self.font_path, 30)
             font = ImageFont.load_default(30)
         except:
             font = ImageFont.load_default(30)
@@ -120,11 +121,11 @@ class ImageGenerator():
         image = self.get_image(author_name)
         image = self.format_image(image, self.img_size)
         image = self.draw_quote_and_author_text(image, self.quote, self.author)
-        image = self.draw_watermark_text(image, self.watermark_text).save("output.png")
+        image = self.draw_watermark_text(image, self.watermark_text).save(self.output_name)
 
 
 if __name__ == "__main__":
-    from input import input_dict
+    from input_parameters import quote, author, img_output_name
     
-    imgGen = ImageGenerator(input_dict["quote"], input_dict["author"])
+    imgGen = ImageGenerator(quote, author, img_output_name)
     imgGen.generate()

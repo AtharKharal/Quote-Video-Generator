@@ -124,7 +124,9 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Publish your video / image.")
+
     parser.add_argument("file_path", help="The path of the file to be published")
+
     args = parser.parse_args()
     if (not args.file_path): raise Exception("File path required.")
 
@@ -133,5 +135,6 @@ if __name__ == "__main__":
 
     if args.file_path.split(".")[1] == "png":
         vidPublisher.publish(publish_type="image")
+
     elif args.file_path.split(".")[1] == "mp4":
         vidPublisher.publish(publish_type="video")

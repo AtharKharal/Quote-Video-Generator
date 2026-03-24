@@ -79,8 +79,10 @@ class VideoGenerator:
         
         for img_path in img_list:
             cropped_img = self.crop_image(img_path)
-            frame = cropped_img.get_frame(0) # Getting frame first for opacity effect
+            frame = cropped_img.get_frame(0) # Getting first frame for opacity effect
 
+            # Faking the opacity effect by just scaling down all RGB values.
+            # Easier to do than mess with its alpha values
             frame_with_opacity = (frame * self.opacity).astype("uint8")
         
             images.append(frame_with_opacity)
@@ -109,17 +111,15 @@ class VideoGenerator:
             method="caption",
             size=(980, None),
             text_align="center",
-            margin=(100, 150)
+            margin=(100, 150) # To avoid vertical text cut-off
         ).with_position(("center", "center")).with_duration(self.duration)
 
         
         video_half_height = self.height / 2
         text_half_height = txt.h / 2
         buffer = 200
-        print(text_half_height)
 
         author_y_pos = video_half_height + text_half_height - buffer
-        print("author_y_pos", author_y_pos)
 
         txt_author = TextClip(
             text=f"- {self.author_name}",

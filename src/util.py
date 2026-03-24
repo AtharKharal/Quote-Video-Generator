@@ -4,7 +4,8 @@ from data.audio_data import audio_data_dict
 load_dotenv()
 
 client = genai.Client()
-model = "gemini-2.5-flash" # gemini-3-flash-preview
+models = ["gemini-2.5-flash", "gemini-3-flash-preview", "gemini-3.1-flash-lite-preview"]
+model = models[0] # When you hit max RPD of one model, switch to the other.
 
 def generate_caption(author, quote):
         print("Generating caption...")
