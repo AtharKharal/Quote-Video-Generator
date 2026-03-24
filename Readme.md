@@ -16,7 +16,7 @@ This project generates a video as shown in the above GIF of 9:16 aspect ratio an
 - `quote`: The actual quote.
 - `author`: Author of the quote.
 
-Other options for video generation are available to be edited as well but a little more technical. View them inside `src/input_parameters.py`. The audio is chosen by gemini api from the `audios/` folder. The `images/` folder contains subdirectories of images categorized by different genres. You can choose the subfolder yourself or use the `random` variable to randomly select from all subfolders with regex `images[0-9]*/*`.
+Other options for video generation are available to be edited as well but a little more technical. View them inside `src/input_parameters.py` and `src/input.py`. The audio is chosen by gemini api from the `audios/` folder. The `images/` folder contains subdirectories of images categorized by different genres. You can choose the subfolder yourself or use the `random` variable to randomly select from all subfolders with regex `images[0-9]*/*`.
 
 All variables from `input_parameters.py` are passed to the file `input.py` which is then used by the `VideoGenerator` class. They are separated for ease of use and most of your time using this program will be spent inside the parameters file. In case you want custom functionality, you can directly edit the `input_dict` inside `input.py`
 
@@ -64,24 +64,23 @@ After setup, running the `publisher.py` file will publish the image / video to I
 
 The actual code is to be found in the `src/` folder. Its folder structure is as follows:
 
-- `vid_generator.py`: Contains the `VideoGenerator` class. Running it after configuring `input.py` shall generate the video.
-- `img_generator.py`: Contains the `ImageGenerator` class. Running it after configuring `input.py` shall generate the image.
+- `vid_generator.py`: Contains the `VideoGenerator` class. Running it after configuring `input_parameters.py` shall generate the video.
+- `img_generator.py`: Contains the `ImageGenerator` class. Running it after configuring `input_parameters.py` shall generate the image.
 - `input.py`: The input for video / image
-- `publisher.py`: Contains `Publisher` class. Running it after after configuring `input.py` shall publish the video / image.
+- `publisher.py`: Contains `Publisher` class. Running it after after configuring `input_parameters.py` shall publish the video / image.
 - `util.py`: Contains util functions
 
 As a developer, you'll mainly be working in the `vid_generator.py`, `img_generator.py`, and `publisher.py` files. I got exams and am too lazy to implement tests, so just run edge cases yourself.
 
 ### Future changes
 
-Here are some features you can contribute on implementing:
+Here are some features I wanna add in the future:
 
 - [ ] Hook up the quotes to some API
 - [x] Use some AI to choose which audios would be best for a quote
 - [ ] Add more images. They can be of any size since the `VideoGenerator` class does resize them, but it sometimes bugs out.
-- [ ] On that topic, actually fixing the `crop_image` function inside the `VideoGenerator` would be great lmao.
-- [ ] Add different formats. Currently its just image shuffling. Other quotes formats involving fading transitions, pictures for posts, or other
-      variations.
+- [ ] On that topic, actually fixing why the `crop_image` function inside the `VideoGenerator` class bugs out and fixing it would be great lmao.
+- [ ] Add different formats. Currently its just image shuffling. Other quotes formats involving fading transitions, or other variations.
 - [x] Add image generation support
 
 ## License

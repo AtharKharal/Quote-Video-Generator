@@ -15,6 +15,6 @@ input_dict = {
   "audio": audio if manual_audio else "audios/" + select_audio(quote),
   "imagesPath": "./images/images" + str(imgGenre),
   "random": random,
-  "bg_img_opacity": 0.2,
+  "bg_img_opacity": 0.3,
   "bg_img_duration": 0.5,
 }
