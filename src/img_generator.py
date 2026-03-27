@@ -116,7 +116,7 @@ class ImageGenerator():
         return img
 
     def generate(self):
-        author_name = self.author.replace(" ", "_")
+        author_name = self.author.replace(" ", "_").split(",")[0] # Split by comma in case book name is mentioned, i.e. [Author],[Book name]
         
         image = self.get_image(author_name)
         image = self.format_image(image, self.img_size)

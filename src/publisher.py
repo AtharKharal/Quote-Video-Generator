@@ -68,6 +68,7 @@ class Publisher():
         response = requests.post(url, json=data)
 
         decoded_response = json.loads(response.content.decode("utf-8")) # Decode byte to dict
+        print(decoded_response)
 
         return decoded_response["id"]
 

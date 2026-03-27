@@ -4,8 +4,9 @@
 
 # Exclusively used for video generation.
 
-from input_parameters import quote, author, vid_output_name, imgGenre, random, audio, manual_audio
-from util import select_audio
+from input_parameters import quote, author, vid_output_name, imgGenre, random, audio, manual_audio, autogen_quote
+from util import get_random_quote, select_audio
+
 
 input_dict = {
   "quote": quote,
@@ -16,5 +17,5 @@ input_dict = {
   "imagesPath": "./images/images" + str(imgGenre),
   "random": random,
   "bg_img_opacity": 0.3,
-  "bg_img_duration": 0.5,
+  "bg_img_duration": 0.35,
 }

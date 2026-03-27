@@ -100,7 +100,7 @@ class VideoGenerator:
         return clip.with_duration(self.duration)
 
     def generate_text(self):
-        wrapper = textwrap.TextWrapper(width=35)
+        wrapper = textwrap.TextWrapper(width=30)
         wrapped_text = "\n".join(wrapper.wrap(text=self.quote))
 
         txt = TextClip(

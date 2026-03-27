@@ -1,11 +1,12 @@
 from dotenv import load_dotenv 
 from google import genai
 from data.audio_data import audio_data_dict
+import requests, json
 load_dotenv()
 
 client = genai.Client()
 models = ["gemini-2.5-flash", "gemini-3-flash-preview", "gemini-3.1-flash-lite-preview"]
-model = models[0] # When you hit max RPD of one model, switch to the other.
+model = models[2] # When you hit max RPD of one model, switch to the other. You can add as many here as you like
 
 def generate_caption(author, quote):
         print("Generating caption...")
@@ -24,7 +25,9 @@ follow @quill_of_humanity for more content!
 
         caption = f"{quote}\n\n{follow_text}\n\n{author_caption}"
 
-        return caption
+        max_caption_size = 2200
+
+        return caption[:max_caption_size]
 
 def select_audio(quote):
         print("Selecting audio from gemini...")    
@@ -37,6 +40,13 @@ def select_audio(quote):
 
         return response.text
 
+def get_random_quote():
+        url = "https://zenquotes.io/api/random"
+
+        r = json.loads(requests.get(url).content.decode("utf-8"))[0]
+        q, a = r["q"], r["a"]
+        return q, a
+
 if __name__ == "__main__":
-        r = select_audio("Hell is empty, and all the devils are here.")
-        print(r)
+        q, a = get_random_quote()
+        print(q, a)
