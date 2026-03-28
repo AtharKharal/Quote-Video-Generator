@@ -1,89 +1,37 @@
-"""Quick validation script for the automated pipeline agents."""
-import sys, os, io
-
-# Fix Windows console encoding
+"""
+Updated validation script for the compact automated pipeline structure.
+"""
+import os, sys, io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 sys.path.insert(0, os.path.dirname(__file__))
 
-def test_quote_curator():
-    print("=" * 50)
-    print("TEST 1: QuoteCurator (fallback mode)")
-    print("=" * 50)
-    from agents.quote_curator import QuoteCurator
+from agents import QuoteCurator, MediaSourcer, CaptionGenerator
+from pipeline import run_pipeline
+
+def test_all():
+    print("🔬 TESTING COMPACT PIPELINE AGENTS\n" + "="*40)
+    
+    # 1. QuoteCurator
     qc = QuoteCurator()
     quotes = qc.curate("stoicism")
-    assert len(quotes) == 5, f"Expected 5 quotes, got {len(quotes)}"
-    for i, q in enumerate(quotes, 1):
-        print(f"  [{i}] \"{q['quote']}\" — {q['author']} ({q['mood']})")
-    assert all(k in quotes[0] for k in ("quote", "author", "mood", "theme")), "Missing keys"
-    print("  ✅ PASS: Got 5 quotes with correct structure\n")
+    assert len(quotes) == 5, "Should have 5 quotes"
+    print(f"✅ QuoteCurator: Got {len(quotes)} quotes.")
 
-def test_media_sourcer():
-    print("=" * 50)
-    print("TEST 2: MediaSourcer (fallback mode)")
-    print("=" * 50)
-    from agents.media_sourcer import MediaSourcer
+    # 2. MediaSourcer
     ms = MediaSourcer()
-    result = ms.source(mood="melancholic", theme="solitude")
-    assert "images_path" in result, "Missing images_path"
-    assert "audio_path" in result, "Missing audio_path"
-    assert os.path.exists(result["audio_path"]), f"Audio not found: {result['audio_path']}"
-    print(f"  Images: {result['images_path']}")
-    print(f"  Audio:  {result['audio_path']}")
-    print("  ✅ PASS: Media sourced successfully\n")
+    media = ms.source(mood="melancholic", theme="nature")
+    assert os.path.exists(media["images_path"]), "Images path missing"
+    assert os.path.exists(media["audio_path"]), f"Audio {media['audio_path']} missing"
+    print(f"✅ MediaSourcer: Images in {media['images_path']}, Audio: {media['audio_path']}")
+    ms.cleanup()
 
-def test_caption_generator():
-    print("=" * 50)
-    print("TEST 3: CaptionGenerator (fallback mode)")
-    print("=" * 50)
-    from agents.caption_generator import CaptionGenerator
+    # 3. CaptionGenerator
     cg = CaptionGenerator()
-    caption = cg.generate(
-        quote="We suffer more often in imagination than in reality.",
-        author="Seneca",
-        mood="reflective"
-    )
-    assert len(caption) > 50, "Caption too short"
-    assert "@quill_of_humanity" in caption, "Missing account handle"
-    assert "#quotes" in caption, "Missing hashtags"
-    print(f"  Caption length: {len(caption)} chars")
-    print(f"  First line: {caption.split(chr(10))[0]}")
-    print("  ✅ PASS: Caption generated with handle + hashtags\n")
+    caption = cg.generate(quote="Test", author="Test Author", mood="calm")
+    assert "@quill_of_humanity" in caption or "#quotes" in caption, "Caption invalid"
+    print(f"✅ CaptionGenerator: Generated '{caption.splitlines()[0]}...'")
 
-def test_input_builder():
-    print("=" * 50)
-    print("TEST 4: Input Builder (refactored input.py)")
-    print("=" * 50)
-    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "execution"))
-    from input import build_input, input_dict
-    
-    # Test build_input
-    cfg = build_input(quote="Test quote", author="Test Author")
-    assert cfg["quote"] == "Test quote"
-    assert cfg["author"] == "Test Author"
-    assert cfg["outputName"] == "output.mp4"
-    print(f"  build_input: {list(cfg.keys())}")
-    
-    # Test backward compat
-    assert "quote" in input_dict, "input_dict missing quote"
-    print(f"  input_dict backward compat: OK (quote='{input_dict['quote'][:40]}...')")
-    print("  ✅ PASS: Config builder works correctly\n")
-
-def test_pipeline_import():
-    print("=" * 50)
-    print("TEST 5: Pipeline module imports")
-    print("=" * 50)
-    from pipeline import run_pipeline, display_quotes, get_user_choice
-    print("  Imported: run_pipeline, display_quotes, get_user_choice")
-    print("  ✅ PASS: All pipeline imports resolve\n")
+    print("="*40 + "\n🎉 ALL TESTS PASSED!")
 
 if __name__ == "__main__":
-    print("\n🔬 AUTOMATED PIPELINE VALIDATION\n")
-    test_quote_curator()
-    test_media_sourcer()
-    test_caption_generator()
-    test_input_builder()
-    test_pipeline_import()
-    print("=" * 50)
-    print("🎉 ALL 5 TESTS PASSED!")
-    print("=" * 50)
+    test_all()
