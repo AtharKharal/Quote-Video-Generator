@@ -1,21 +1,67 @@
-# For convienience, edit the `input_parameters.py` file to tune your parameters.
-# Only change this dict directly if you know what you're doing
-# and want custom functionality.
+import os
+import sys
 
-# Exclusively used for video generation.
+# Ensure the 'src' directory is in the path for imports
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from input_parameters import quote, author, vid_output_name, imgGenre, random, audio, manual_audio, autogen_quote
+from data.config_manager import ConfigManager
 from util import get_random_quote, select_audio
 
+def get_input_dict(config_path=None):
+    """
+    Returns a dictionary of input parameters for the generation pipeline,
+    dynamically loaded from the ConfigManager.
+    """
+    config = ConfigManager(config_path)
+    
+    # Handle autogen quote logic
+    quote = config["quote"]
+    author = config["author"]
+    if config["autogen_quote"] and (not quote or not author):
+        # Only fetch random quote if not manually provided
+        try:
+            quote, author = get_random_quote()
+        except Exception as e:
+            print(f"Error fetching random quote: {e}")
+            quote = "Wisdom is the reward you get for a lifetime of listening when you'd have rather talked."
+            author = "Mark Twain"
+            
+    # Handle audio selection logic
+    audio_path = config["audio"]
+    if not config["manual_audio"]:
+        try:
+            selected_audio = select_audio(quote)
+            audio_path = os.path.join("audios", selected_audio)
+        except Exception as e:
+            print(f"Error selecting audio: {e}")
+            # Fallback to default audio in config
+            audio_path = config["audio"]
 
-input_dict = {
-  "quote": quote,
-  "author": author,
-  "outputName": vid_output_name,
-  "font": "fonts/font.ttf",
-  "audio": audio if manual_audio else "audios/" + select_audio(quote),
-  "imagesPath": "./images/images" + str(imgGenre),
-  "random": random,
-  "bg_img_opacity": 0.3,
-  "bg_img_duration": 0.35,
-}
+    # Construct the input dictionary expected by generators
+    input_dict = {
+        "quote": quote,
+        "author": author,
+        "outputName": config["vid_output_name"],
+        "imgOutputName": config["img_output_name"],
+        "font": config["font"],
+        "audio": audio_path,
+        "imagesPath": config["images_path"],
+        "random": config["random"],
+        "bg_img_opacity": config["bg_img_opacity"],
+        "bg_img_duration": config["bg_img_duration"],
+        "watermark": config["watermark"]
+    }
+    
+    # Map 'images_path' back to 'imgGenre' context if needed for old scripts
+    # (though generators should ideally use imagesPath)
+    
+    return input_dict
+
+# Initialize a default input_dict for backward compatibility
+# (imported by vid_generator.py and others)
+input_dict = get_input_dict()
+
+if __name__ == "__main__":
+    import pprint
+    print("Generated Input Dictionary:")
+    pprint.pprint(input_dict)

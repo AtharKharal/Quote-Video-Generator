@@ -8,3 +8,5 @@ pillow==11.3.0
 proglog==0.1.12
 python-dotenv==1.2.2
 tqdm==4.67.3
+requests
+google-genai

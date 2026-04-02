@@ -1,7 +1,9 @@
-from dotenv import load_dotenv 
+import requests, json, os, textwrap
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance
+import numpy as np
+from dotenv import load_dotenv
 from google import genai
-from data.audio_data import audio_data_dict
-import requests, json
+
 load_dotenv()
 
 client = genai.Client()
@@ -41,11 +43,57 @@ def select_audio(quote):
         return response.text
 
 def get_random_quote():
-        url = "https://zenquotes.io/api/random"
-
+    """Fetches a random quote from ZenQuotes API."""
+    url = "https://zenquotes.io/api/random"
+    try:
         r = json.loads(requests.get(url).content.decode("utf-8"))[0]
         q, a = r["q"], r["a"]
         return q, a
+    except Exception as e:
+        print(f"Error fetching random quote: {e}")
+        return "The only way to do great work is to love what you do.", "Steve Jobs"
+
+class MediaUtils:
+    @staticmethod
+    def smart_crop(img, target_width, target_height):
+        """
+        Intelligently crops an image to a target aspect ratio.
+        Default is center-crop.
+        """
+        orig_w, orig_h = img.size
+        target_ratio = target_width / target_height
+        orig_ratio = orig_w / orig_h
+
+        if orig_ratio > target_ratio:
+            # Image is wider than target
+            new_w = int(round(orig_h * target_ratio))
+            left = (orig_w - new_w) // 2
+            top = 0
+            right = left + new_w
+            bottom = orig_h
+        else:
+            # Image is taller than target
+            new_h = int(round(orig_w / target_ratio))
+            left = 0
+            top = (orig_h - new_h) // 2
+            right = orig_w
+            bottom = top + new_h
+
+        img = img.crop((left, top, right, bottom))
+        img = img.resize((target_width, target_height), Image.Resampling.LANCZOS)
+        return img
+
+    @staticmethod
+    def apply_opacity(img, opacity):
+        """Applies a 'fake' opacity by darkening the image."""
+        enhancer = ImageEnhance.Brightness(img)
+        return enhancer.enhance(opacity)
+
+    @staticmethod
+    def wrap_text(text, width=30):
+        """Wraps text to a specific width."""
+        wrapper = textwrap.TextWrapper(width=width)
+        return "\n".join(wrapper.wrap(text=text))
 
 if __name__ == "__main__":
         q, a = get_random_quote()
