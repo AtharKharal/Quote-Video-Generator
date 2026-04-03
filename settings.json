@@ -1,0 +1,15 @@
+{
+  "quote": "The only limit to our realization of tomorrow will be our doubts of today.",
+  "author": "Franklin D. Roosevelt",
+  "vid_output_name": "output.mp4",
+  "img_output_name": "output.png",
+  "autogen_quote": false,
+  "random": true,
+  "audio_file": "audios/10.mp3",
+  "manual_audio": true,
+  "font": "fonts/font.ttf",
+  "bg_img_opacity": 0.3,
+  "bg_img_duration": 0.35,
+  "images_path": "images/images1",
+  "watermark": "@quill_of_humanity"
+}
