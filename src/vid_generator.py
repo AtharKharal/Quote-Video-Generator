@@ -89,29 +89,36 @@ class VideoGenerator:
 
     def generate_text_clips(self, total_duration):
         """Generates the main quote text and author credit clips."""
-        # Use MediaUtils for consistent wrapping
-        wrapped_quote = MediaUtils.wrap_text(self.quote, width=28)
-
+        # Standardize on wide wrapping (width 40) or better: MoviePy caption method
+        # Using caption method with specific width (900) automatically wraps.
         quote_clip = TextClip(
-            text=wrapped_quote,
+            text=self.quote,
             font=self.font,
             font_size=self.font_size,
             color="white",
             method="caption",
-            size=(980, None),
+            size=(900, None),
             text_align="center"
         ).with_position(("center", "center")).with_duration(total_duration)
 
-        # Calculate author position with buffer
-        author_y_pos = (self.height / 2) + (quote_clip.h / 2) + 100
+        # Ensure the quote fits in the safe zone
+        if not MediaUtils.is_within_safe_zone(quote_clip.h):
+            print(f"Warning: Quote clip height ({quote_clip.h}) exceeds safe zone. Scaling down...")
+            # Simple downscale if too large
+            quote_clip = quote_clip.with_scale(0.8).with_position(("center", "center"))
+
+        # Author clip positioned relative to the center, or at the bottom 1/4
+        author_y_pos = (self.height / 2) + (quote_clip.h / 2) + 60
+        if author_y_pos > self.height - 300: # Protect bottom Reels UI
+            author_y_pos = self.height - 400
 
         author_clip = TextClip(
             text=f"- {self.author_name}",
             font=self.font,
-            font_size=45,
+            font_size=40,
             color='white',
             method='caption',
-            size=(980, None),
+            size=(800, None),
             text_align="center"
         ).with_position(("center", author_y_pos)).with_duration(total_duration)
 
@@ -133,22 +140,26 @@ class VideoGenerator:
         watermark_clip = TextClip(
             text=self.watermark_text,
             font=self.font,
-            font_size=30,
+            font_size=25,
             color="white"
-        ).with_opacity(0.5).with_position(("right", "bottom")).with_margin(40).with_duration(total_duration)
+        ).with_opacity(0.4).with_position(("center", 1820)).with_duration(total_duration)
 
         # Assemble
         final_video = CompositeVideoClip([bg_clip, quote_clip, author_clip, watermark_clip])
         final_video = final_video.with_audio(audio_clip)
         
         # Write output
+        # Remove threads=4 to avoid potential race conditions with audio injection on some systems
         final_video.write_videofile(
             self.output_name, 
             codec="libx264", 
             audio_codec="aac", 
             fps=24,
-            threads=4
+            logger='bar'
         )
+        
+        # Close audio explicitly to free file handles (Good practice)
+        audio_clip.close()
         
         return self.output_name
 

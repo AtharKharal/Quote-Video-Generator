@@ -35,14 +35,32 @@ class CognitiveEnricher:
         }
     }
 
-    def __init__(self, model_id="gemini-2.5-flash"):
-        self.client = genai.Client()
+    def __init__(self, model_id="gemini-2.0-flash"):
         self.model_id = model_id
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            print("Warning: GEMINI_API_KEY not found. Enrichment will use safe defaults.")
+            self.client = None
+        else:
+            try:
+                self.client = genai.Client(api_key=api_key)
+            except Exception:
+                self.client = None
 
     def enrich(self, quote, author):
         """
         Extracts emotional subtext and generates optimized metadata.
         """
+        if not self.client:
+             print("Skipping AI Enrichment (Client Initialization Failed). Using Stoic defaults.")
+             return {
+                "sentiment": "Stoic",
+                "intensity": 0.5,
+                "caption": f"{quote} - {author}",
+                "hashtags": ["#wisdom", "#quotes"],
+                "aesthetics": self.AESTHETIC_MAP["Stoic"]
+            }
+        
         print(f"Enriching content with {self.model_id}...")
         
         prompt = f"""
